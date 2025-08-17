@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: HealthCheck
+  datasource:
+    url: jdbc:h2:file:/media/himanshu/Backup/gitfolder/HealthCheck/src/main/resources/h2filedb/healthCheck-data;AUTO_SERVER=true
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+        path: /h2-console
