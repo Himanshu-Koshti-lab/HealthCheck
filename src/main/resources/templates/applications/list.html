@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Applications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- (Optional) quick styles -->
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: .6rem .8rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
+        .badge { padding: .2rem .5rem; border-radius: .5rem; font-size: .85rem; font-weight: 600; }
+        .up { background: #dcfce7; color: #166534; }
+        .down { background: #fee2e2; color: #991b1b; }
+        .muted { color: #6b7280; font-size: .9rem; }
+        .actions a { text-decoration: none; color: #2563eb; }
+    </style>
+</head>
+<body>
+<h1>Application Health</h1>
+<p class="muted" th:text="'Total: ' + ${#lists.size(apps)}"></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Application</th>
+        <th>Up Time</th>
+        <th>Status</th>
+        <th class="actions">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="app : ${apps}">
+        <td th:text="${app.id}">1</td>
+        <td th:text="${app.applicationName}">Health Check</td>
+        <!-- format LocalDateTime -->
+        <td th:text="${#temporals.format(app.upTime, 'dd-MMM-yyyy HH:mm:ss')}">01-Aug-2025 14:10:00</td>
+        <td>
+            <span class="badge"
+                  th:classappend="${app.status} ? ' up' : ' down'"
+                  th:text="${app.status} ? 'UP' : 'DOWN'">UP</span>
+        </td>
+        <td class="actions">
+            <!-- example placeholders for future actions -->
+            <a th:href="@{'/applications/' + ${app.id}}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
