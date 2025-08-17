@@ -1,6 +1,6 @@
 package com.syetem.healthcheck;
 
-import com.syetem.healthcheck.Entity.Application;
+import com.syetem.healthcheck.entity.Application;
 import jdk.jfr.Registered;
 import org.springframework.data.jpa.repository.JpaRepository;
 

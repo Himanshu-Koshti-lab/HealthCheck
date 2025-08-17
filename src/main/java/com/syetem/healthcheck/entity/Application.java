@@ -1,4 +1,4 @@
-package com.syetem.healthcheck.Entity;
+package com.syetem.healthcheck.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +21,9 @@ public class Application implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    String ApplicationName;
+    String applicationName;
 
-    LocalDateTime UpTime;
+    LocalDateTime upTime;
 
     boolean status;
 
