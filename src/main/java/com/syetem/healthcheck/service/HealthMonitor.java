@@ -2,6 +2,8 @@ package com.syetem.healthcheck.service;
 
 import com.syetem.healthcheck.entity.Application;
 import com.syetem.healthcheck.repository.ApplicationRepository;
+import com.syetem.healthcheck.response.ApplicationResponse;
+import com.syetem.healthcheck.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -33,8 +37,19 @@ public class HealthMonitor {
     }
 
 
-    public List<Application> healthMonitor() {
-        return applicationRepository.findAll();
+    public List<ApplicationResponse> healthMonitor() {
+
+        return applicationRepository.findAll().stream().map(application -> {
+            Duration uptime = Duration.between(CommonUtils.StartTime, Instant.now());
+            LocalDateTime uptimeTime = LocalDateTime.ofEpochSecond(
+                    uptime.getSeconds(), 0, java.time.ZoneOffset.UTC);
+            return ApplicationResponse.builder()
+                    .applicationName(application.getApplicationName())
+                    .upTime(uptimeTime.toLocalTime().toString())
+                    .status(application.isStatus())
+                    .id(application.getId())
+                    .build();
+        }).toList();
     }
 
     @Transactional
@@ -84,7 +99,7 @@ public class HealthMonitor {
     @Scheduled(fixedRate = 10000)
     public void updateStatus() {
 
-        if(applicationRepository.count() == 0)
+        if (applicationRepository.count() == 0)
             loadData();
 
         log.info("Refreshing application status...");

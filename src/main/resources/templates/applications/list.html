@@ -14,10 +14,19 @@
         .down { background: #fee2e2; color: #991b1b; }
         .muted { color: #6b7280; font-size: .9rem; }
         .actions a { text-decoration: none; color: #2563eb; }
+        .health-tag { font-size: 1rem; padding: .4rem .8rem; border-radius: .5rem; font-weight: 600; }
     </style>
 </head>
 <body>
-<h1>Application Health</h1>
+<h1>
+    Application Health
+    <span class="health-tag"
+          th:classappend="${overallUp} ? ' up' : ' down'"
+          th:text="${overallUp} ? 'OVERALL : UP' : 'OVERALL : DOWN'">
+        OVERALL: UP
+    </span>
+</h1>
+
 <p class="muted" th:text="'Total: ' + ${#lists.size(apps)}"></p>
 
 <table>
@@ -35,14 +44,13 @@
         <td th:text="${app.id}">1</td>
         <td th:text="${app.applicationName}">Health Check</td>
         <!-- format LocalDateTime -->
-        <td th:text="${#temporals.format(app.upTime, 'dd-MMM-yyyy HH:mm:ss')}">01-Aug-2025 14:10:00</td>
+        <td th:text="${app.upTime}">01-Aug-2025 14:10:00</td>
         <td>
             <span class="badge"
                   th:classappend="${app.status} ? ' up' : ' down'"
                   th:text="${app.status} ? 'UP' : 'DOWN'">UP</span>
         </td>
         <td class="actions">
-            <!-- example placeholders for future actions -->
             <a th:href="@{'/applications/' + ${app.id}}">View</a>
         </td>
     </tr>

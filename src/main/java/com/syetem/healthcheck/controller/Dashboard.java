@@ -1,5 +1,6 @@
 package com.syetem.healthcheck.controller;
 
+import com.syetem.healthcheck.response.ApplicationResponse;
 import com.syetem.healthcheck.service.HealthMonitor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ public class Dashboard {
     @GetMapping("/applications")
     public String list(Model model) {
         model.addAttribute("apps", healthMonitor.healthMonitor());
+        boolean overallUp = healthMonitor.healthMonitor().stream().allMatch(ApplicationResponse::isStatus);
+        model.addAttribute("overallUp", overallUp);
         return "applications/list";
     }
 }
