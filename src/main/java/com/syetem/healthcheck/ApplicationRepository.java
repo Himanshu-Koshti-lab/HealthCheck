@@ -1,9 +1,10 @@
 package com.syetem.healthcheck;
 
 import com.syetem.healthcheck.entity.Application;
-import jdk.jfr.Registered;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Registered
+@Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
+    Application findByApplicationName(String applicationName);
 }
