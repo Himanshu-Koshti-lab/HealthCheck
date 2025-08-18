@@ -1,6 +1,6 @@
 package com.syetem.healthcheck.controller;
 
-import com.syetem.healthcheck.ApplicationRepository;
+import com.syetem.healthcheck.repository.ApplicationRepository;
 import com.syetem.healthcheck.entity.Application;
 import com.syetem.healthcheck.service.HealthMonitor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,6 @@ public class HealthCheck {
 
     @GetMapping("/api/fetchStatus/{applicationName}")
     public String fetchStatus(@PathVariable String applicationName) {
-        healthMonitor.loadData();
         log.info("Fetching status for application {}", applicationName);
         return "up";
     }

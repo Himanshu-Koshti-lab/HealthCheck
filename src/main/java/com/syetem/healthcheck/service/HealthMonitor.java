@@ -1,29 +1,35 @@
 package com.syetem.healthcheck.service;
 
-import com.syetem.healthcheck.ApplicationRepository;
 import com.syetem.healthcheck.entity.Application;
+import com.syetem.healthcheck.repository.ApplicationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 @EnableScheduling
 public class HealthMonitor {
-    static ApplicationRepository applicationRepository;
-    static final LocalDateTime now = LocalDateTime.now();
+    ApplicationRepository applicationRepository;
+    public final LocalDateTime now = LocalDateTime.now();
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 
     HealthMonitor(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
+        executor.scheduleWithFixedDelay(this::loadData, 10, 10, TimeUnit.SECONDS);
     }
 
 
@@ -34,8 +40,10 @@ public class HealthMonitor {
     @Transactional
     public void loadData() {
 
+//        Data Cleanup
         applicationRepository.deleteAll();
 
+//        Dummy Application register
         Application application = Application.builder()
                 .applicationName("HealthCheck")
                 .status(true)
@@ -68,11 +76,12 @@ public class HealthMonitor {
             restTemplate.postForEntity(url, httpEntity, String.class);
         });
 
-        log.info("Data loading completed. ");
+        log.info("Dummy application registration completed. ");
+
     }
 
 
-    //    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000)
     public void updateStatus() {
 
         log.info("Refreshing application status...");
