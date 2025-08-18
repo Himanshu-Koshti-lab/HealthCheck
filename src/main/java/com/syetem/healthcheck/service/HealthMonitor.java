@@ -29,7 +29,7 @@ public class HealthMonitor {
 
     HealthMonitor(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
-        executor.scheduleWithFixedDelay(this::loadData, 10, 10, TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(this::updateStatus, 10, 10, TimeUnit.SECONDS);
     }
 
 
@@ -83,6 +83,9 @@ public class HealthMonitor {
 
     @Scheduled(fixedRate = 10000)
     public void updateStatus() {
+
+        if(applicationRepository.count() == 0)
+            loadData();
 
         log.info("Refreshing application status...");
         RestTemplate restTemplate = new RestTemplate();
