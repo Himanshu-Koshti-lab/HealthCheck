@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-@EnableScheduling
 public class HealthMonitor {
 
     ApplicationRepository applicationRepository;
