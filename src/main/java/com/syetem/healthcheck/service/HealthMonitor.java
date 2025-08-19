@@ -26,19 +26,17 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @EnableScheduling
 public class HealthMonitor {
+
     ApplicationRepository applicationRepository;
     public final LocalDateTime now = LocalDateTime.now();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
 
     HealthMonitor(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
         executor.scheduleWithFixedDelay(this::updateStatus, 10, 10, TimeUnit.SECONDS);
     }
 
-
     public List<ApplicationResponse> healthMonitor() {
-
         return applicationRepository.findAll().stream().map(application -> {
             Duration uptime = Duration.between(CommonUtils.StartTime, Instant.now());
             LocalDateTime uptimeTime = LocalDateTime.ofEpochSecond(
@@ -95,8 +93,6 @@ public class HealthMonitor {
 
     }
 
-
-    @Scheduled(fixedRate = 10000)
     public void updateStatus() {
 
         if (applicationRepository.count() == 0)
@@ -106,7 +102,6 @@ public class HealthMonitor {
         RestTemplate restTemplate = new RestTemplate();
         log.info("Number of Registered applications : " + applicationRepository.count());
         applicationRepository.findAll().forEach(application -> {
-            log.info("Checking status for application : {}", application.getApplicationName());
             String applicationStatus = restTemplate.getForObject("http://localhost:8080/api/fetchStatus/{applicationName}", String.class, application.getApplicationName());
             log.info("Status for application {} : {}", application.getApplicationName(), applicationStatus);
             assert applicationStatus != null;

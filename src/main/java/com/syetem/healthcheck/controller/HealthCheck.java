@@ -1,10 +1,12 @@
 package com.syetem.healthcheck.controller;
 
-import com.syetem.healthcheck.repository.ApplicationRepository;
 import com.syetem.healthcheck.entity.Application;
+import com.syetem.healthcheck.repository.ApplicationRepository;
 import com.syetem.healthcheck.service.HealthMonitor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 @Slf4j
 @RestController
@@ -13,6 +15,8 @@ public class HealthCheck {
     HealthMonitor healthMonitor;
 
     ApplicationRepository applicationRepository;
+
+    Random random = new Random();
 
     public HealthCheck(HealthMonitor healthMonitor, ApplicationRepository applicationRepository) {
         this.healthMonitor = healthMonitor;
@@ -30,8 +34,7 @@ public class HealthCheck {
 
     @GetMapping("/api/fetchStatus/{applicationName}")
     public String fetchStatus(@PathVariable String applicationName) {
-        log.info("Fetching status for application {}", applicationName);
-        return "up";
+        return random.nextBoolean() ? "up" : "down";
     }
 
 }
