@@ -2,7 +2,7 @@ spring:
   application:
     name: HealthCheck
   datasource:
-    url: jdbc:h2:file:/media/himanshu/Backup/gitfolder/HealthCheck/src/main/resources/h2filedb/healthCheck-data;AUTO_SERVER=true
+    url: jdbc:h2:file:/media/himanshu/Data/GitFolder/HealthCheck/src/main/resources/h2filedb/healthCheck-data;AUTO_SERVER=true
     username: sa
     password: password
     driverClassName: org.h2.Driver
