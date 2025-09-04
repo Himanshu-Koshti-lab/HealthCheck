@@ -101,7 +101,7 @@ public class HealthMonitor {
         RestTemplate restTemplate = new RestTemplate();
         log.info("Number of Registered applications : " + applicationRepository.count());
         applicationRepository.findAll().forEach(application -> {
-            String applicationStatus = restTemplate.getForObject("http://localhost:8080/api/fetchStatus/{applicationName}", String.class, application.getApplicationName());
+            String applicationStatus = restTemplate.getForObject("http://localhost:8081/api/fetchStatus/{applicationName}", String.class, application.getApplicationName());
             log.info("Status for application {} : {}", application.getApplicationName(), applicationStatus);
             assert applicationStatus != null;
             application.setStatus(applicationStatus.equalsIgnoreCase("up"));

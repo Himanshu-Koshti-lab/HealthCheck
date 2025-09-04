@@ -20,6 +20,6 @@ public class Dashboard {
         model.addAttribute("apps", healthMonitor.healthMonitor());
         boolean overallUp = healthMonitor.healthMonitor().stream().allMatch(ApplicationResponse::isStatus);
         model.addAttribute("overallUp", overallUp);
-        return "applications/list";
+        return "list";
     }
 }
