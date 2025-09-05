@@ -14,6 +14,8 @@
           th:text="${overallUp} ? 'OVERALL : UP' : 'OVERALL : DOWN'">
         OVERALL: UP
     </span>
+    <p>Local Time: <span th:text="${localTime}"></span></p>
+    <p>UTC Time: <span th:text="${utcTime}"></span></p>
 </h1>
 
 <p class="muted" th:text="'Total: ' + ${#lists.size(apps)}"></p>

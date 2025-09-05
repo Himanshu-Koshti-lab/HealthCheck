@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 @Slf4j
 @RestController
@@ -34,6 +35,7 @@ public class HealthCheck {
 
     @GetMapping("/api/fetchStatus/{applicationName}")
     public String fetchStatus(@PathVariable String applicationName) {
+        log.info("Fetching status for application {}", applicationName);
         return random.nextBoolean() ? "up" : "down";
     }
 
